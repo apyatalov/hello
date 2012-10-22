@@ -1,8 +1,9 @@
 
 public class Triangle implements Shape {
 
+    @Override
     public String draw() {
-        return "Go go go triangles!";
+        return "Hurray for triangles!";
     }
 
 }
