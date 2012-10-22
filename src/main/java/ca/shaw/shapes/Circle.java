@@ -1,5 +1,7 @@
+package ca.shaw.shapes;
+
 public class Circle implements Shape {
     public String draw() {
-        return "No rules at all!!!!";
+        return "Circle not so much rules!!!!";
     }
 }
