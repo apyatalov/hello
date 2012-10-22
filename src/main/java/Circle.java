@@ -1,5 +1,5 @@
 public class Circle implements Shape {
     public String draw() {
-        return "Circle rules!!!!";
+        return "Circle not so much rules!!!!";
     }
 }
