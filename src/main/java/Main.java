@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.shaw.shapes.Shape;
+
 
 public class Main {
 

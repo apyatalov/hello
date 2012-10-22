@@ -1,3 +1,5 @@
+package ca.shaw.shapes;
+
 
 public class Rhombus implements Shape{
 	
