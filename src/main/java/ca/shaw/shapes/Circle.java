@@ -1,3 +1,6 @@
+package ca.shaw.shapes;
+
+import ca.shaw.interfaces.Shape;
 
 public class Circle implements Shape {
 
