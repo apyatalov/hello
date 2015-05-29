@@ -1,0 +1,359 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+//apply plugin: 'pmd'
+//apply plugin: 'checkstyle'
+
+// Custom plugins below here (see OE2BuildUtilities project)
+//apply plugin: 'emma'
+//apply plugin: 'testIndex'
+//apply plugin: 'version'
+//apply plugin: 'javaVersion'
+//apply plugin: 'dependencies'
+
+defaultTasks 'clean', 'build'
+//, 'zipInstaller', 'zipCatalogs', 'uploadArchives'
+
+buildscript {
+    repositories {
+        mavenLocal()
+//        maven {
+//            url "${baseRepoUrl}/shaw-core-oe"
+//            credentials {
+//                username artifactoryUsername
+//                password artifactoryPassword
+//            }
+//        }
+    }
+//    dependencies {
+//        classpath (
+//            ["ca.shaw:oe2-build-utilities:${versionPrefix}.+"]
+//        )
+//    }
+    configurations.all {
+        resolutionStrategy.cacheDynamicVersionsFor 2, 'minutes'
+    }
+}
+
+repositories {
+    mavenLocal()
+//    maven {
+//        url "${baseRepoUrl}/shaw-core-oe"
+//        credentials {
+//            username artifactoryUsername
+//            password artifactoryPassword
+//        }
+//    }
+}
+
+//task getCodeQualityConfigs << {
+//    configurations.codeQualityConfigs.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+//        copy {
+//            from artifact.file
+//            into "${buildDir}/tmp"
+//            rename { "${artifact.classifier}.${artifact.extension}" }
+//        }
+//    }
+//}
+
+//tasks.withType(Pmd) {
+//    dependsOn getCodeQualityConfigs
+//}
+
+//tasks.withType(Checkstyle) {
+//    dependsOn getCodeQualityConfigs
+//}
+
+//pmd {
+//    ruleSets = [] // Disable default rule sets since we use our own
+//    ruleSetFiles = files("${buildDir}/tmp/pmdruleset.xml")
+//}
+
+// TODO: Fix PMD failures in test source set and enable. Should we use a different rule set for tests?
+//pmdTest.enabled = false
+
+//checkstyle {
+//    configFile = new File("${buildDir}/tmp/checkstyleconfig.xml")
+//}
+
+configurations.all {
+    // Tell Gradle to download dynamic versions more frequently
+    resolutionStrategy.cacheDynamicVersionsFor 2, 'minutes'
+}
+
+dependencies {
+//    configurations {
+//        [ clientInstaller, clientPythonImports, serverInstaller, serverAntImports, codeQualityConfigs ]
+//    }
+
+    compile (
+//        ['org.apache.poi:poi:3.9'],
+//        ['com.sun.jersey:jersey-core:1.17.1'],
+//        ['com.sun.jersey:jersey-client:1.17.1'],
+//        ['com.sun.jersey:jersey-server:1.17.1'],
+//        ['com.sun.jersey.contribs:jersey-multipart:1.17.1'],
+//        ["ca.shaw:ordermanagement:${versionPrefix}.+"],
+//        ["ca.shaw:ordermanagement-web:${versionPrefix}.+"],
+//        ['org.bouncycastle:bcprov-jdk15on:1.47'],
+//        ['net.sf.json-lib:json-lib:2.4:jdk15'],
+//        ["ca.shaw:catalog-base:${CatalogBaseVersionPrefix}.+"],
+//        ["com.netcracker:product-catalog-importer:9.0.1.1_01"],
+    )
+
+//    compile files('//Users/apyatalov/GoogleDrive/Java/ncservicelibrary/build_gradle/libs/catalog-base.jar')
+
+    testCompile (
+//        ['junit:junit:4.11'],
+//        ['org.hamcrest:hamcrest-library:1.3'],
+//        ['org.mockito:mockito-core:1.9.5'],
+//        ['xmlunit:xmlunit:1.3'],
+//        ["ca.shaw:catalog-base:${CatalogBaseVersionPrefix}.+"],
+//        ["com.netcracker:product-catalog-importer:9.0.1.1_01"],
+    )
+
+//    clientInstaller (
+//        ['com.jcraft:jsch:0.1.52']
+//    )
+//    clientPythonImports (
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+:environment_utils@py"]
+//    )
+//    serverInstaller (
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+"],
+//        ['com.netcracker:exportimportejb:7.3.3.9'],
+//        ['net.sf.saxon:Saxon-HE:9.2.1.2']
+//    )
+//    serverAntImports (
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+:ncofflineimport@xml"],
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+:macrodefs@xml"]
+//    )
+//    codeQualityConfigs (
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+:pmdruleset@xml"],
+//        ["ca.shaw:oe2-build-utilities:${versionPrefix}.+:checkstyleconfig@xml"]
+//    )
+}
+
+test {
+    // Tests can hang without increasing memory
+    jvmArgs("-XX:MaxPermSize=256m",  "-XX:-UseSplitVerifier", "-Xmx512m", "-Duser.language=en", "-Duser.region=CA", "-Duser.timezone=America/Denver")
+}
+
+jar {
+    baseName 'test'
+    archiveName 'test.jar'
+}
+
+artifacts {
+    //archives catalogJar
+}
+
+//uploadArchives {
+//    if (!project.hasProperty('teamcity') || project.hasProperty('skip.artifact.upload')) {
+//         Only upload archive if this is a build running from TeamCity
+//        uploadArchives.enabled = false
+//    }
+
+//    repositories {
+//        mavenDeployer {
+//            repository(url: "${baseRepoUrl}/shaw-private-core-oe-release") {
+//                authentication(userName: artifactoryUsername, password: artifactoryPassword)
+//            }
+//            addFilter('jar') { artifact, file ->
+//                artifact.name == 'salescatalogue-web'
+//            }
+//        }
+//    }
+//}
+
+//install.repositories.mavenInstaller {
+//     TODO: Can we avoid duplicating these filters from the "uploadArchives" section above?
+//    addFilter('jar') { artifact, file ->
+//        artifact.name == 'salescatalogue-web'
+//    }
+//}
+
+//task buildApplicationDir(dependsOn: ['assemble'], group: 'Installer') << {
+//    copy {
+//        from libsDir
+//        into "${applicationDir}/NetCrackerWebApp/WEB-INF/lib"
+//        include tasks.jar.archiveName
+//    }
+//}
+
+//task zipSnapshot(type: Zip, group: 'Installer') {
+//    from 'etc/product_catalog/snapshot'
+//    destinationDir file("${installerDir}/server/product_catalog")
+//    archiveName "snapshot.zip"
+//}
+
+//task buildInstaller(dependsOn: ['buildApplicationDir', 'generateDependenciesFile', 'zipSnapshot'], group: 'Installer') << {
+//    copy {
+//        from 'etc'
+//        into buildDir
+//        include 'installer/**'
+//        exclude '**/dependencies.properties'
+//    }
+//    copy {
+//        from 'etc'
+//        into "${installerDir}/server"
+//        include 'scripts/**'
+//    }
+//    copy {
+//        from 'etc/product_catalog'
+//        into "${installerDir}/server/product_catalog"
+//        include '*.*'
+//        include 'snapshot/**'
+//    }
+//    copy {
+//        from project.configurations.clientInstaller
+//        into "${installerDir}/antlib"
+//    }
+//    copy {
+//        from project.configurations.serverInstaller
+//        into "${installerDir}/server/lib"
+//        exclude 'ant*.jar'
+//        exclude 'wlfullclient*.jar'
+//    }
+//    copy {
+//        from 'etc/E_I_Files'
+//        into "${installerDir}/server/E_I_Files"
+//        include '**/*.zip'
+//        eachFile { FileCopyDetails copyDetails ->
+//            def source = copyDetails.relativePath
+//            def newPath = source.toString().replaceAll('.*/', '') // Flatten path heirarchy
+//            copyDetails.relativePath = RelativePath.parse(source.isFile(), newPath)
+//        }
+//        includeEmptyDirs = false
+//    }
+//    copy {
+//        from 'src/main/resources/slc_config.xml'
+//        into "${installerDir}/server/product_catalog"
+//    }
+
+    // Download Python import dependencies and remove the version # from the filename
+//    configurations.clientPythonImports.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+//        copy {
+//            from artifact.file
+//            into "${installerDir}/pylib"
+//            rename { "${artifact.classifier}.${artifact.extension}" }
+//        }
+//    }
+
+    // Download Ant import dependencies and remove the version # from the filename
+//    configurations.serverAntImports.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+//        copy {
+//            from artifact.file
+//            into "${installerDir}/server/ant_imports"
+//            rename { "${artifact.classifier}.${artifact.extension}" }
+//        }
+//    }
+
+//    new File("${installerDir}/server/product_catalog/snapshot_version.txt").write("slc-${versionPrefix}-snapshot_${version}")
+//    new File("${installerDir}/server/version.txt").write(version)
+//    new File("${installerDir}/version.txt").write(version)
+//}
+
+//task generateCatalogArtifacts(dependsOn: 'buildInstaller', type: JavaExec, group: 'Installer') {
+//    main = 'ca.shaw.slc.Exporter'
+//    classpath (
+//        sourceSets.main.output,
+//        configurations.compile
+//    )
+//    jvmArgs ("-XX:MaxPermSize=256m", "-Xmx512m")
+//    args += "${installerDir}/server/product_catalog/pc_data.zip"                  //[0]zip with dat files output file
+//    args += "etc/product_catalog/snapshot/SalesCatalogueData.xml"                 //[1]source file
+//    args += "${installerDir}/server/product_catalog/catalog_hash.txt"             //[2]catalog hash file
+//    args += "${installerDir}/server/scripts/update_managed_catalog_object.sql"    //[3]output file which contains anonym. block which will update SLC managed catalog object
+//
+//    args += "${installerDir}/server/scripts/update_pc.sql"           //[4]output file
+//    args += "${installerDir}/server/scripts/fill_pc_with_removed.sql"//[5]output file, which fills pc_nc_objects with objects which should be removed
+//    args += "${installerDir}/server/product_catalog/slc_config.xml"                      //[6]config file
+//
+//    args += "src/main/resources/finance_view_template.xml"                        //[7]finance view template file
+//    args += "${installerDir}/server/product_catalog/financeView.xls"              //[8]finance view output file
+//    args += "9140114435113253904"                                                 //[9]NCSalesCatalogue managedCatalogId
+//    args += "slc-${versionPrefix}-snapshot_${version}"                            //[10]Catalogue version
+//
+//    doLast {
+//        project.delete "${installerDir}/server/product_catalog/extract.sql"
+//    }
+//}
+
+//task generateScripts(dependsOn: 'buildInstaller', type: JavaExec, group: 'Installer') {
+//    main = 'ca.shaw.tools.sql.ScriptGenerator'
+//    classpath = buildscript.configurations.classpath
+//    args += 'SalesCatalog'
+//    args += "${installerDir}/server"             // generated sql location
+//    args += "${installerDir}/server/scripts"     // lst location
+//    args += 'scriptsGenerate.lst'
+//}
+
+//task generateImporter (dependsOn: 'buildInstaller', type: JavaExec, group: 'Installer') {
+//    main = 'ca.shaw.tools.importer.ImportGenerator'
+//    classpath = buildscript.configurations.classpath
+//    args += "${installerDir}/server"
+//}
+
+//task zipImporter (dependsOn: ['generateImporter'], type: Zip, group: 'Installer') {
+//    from "${installerDir}/server/E_I_Files"
+//    destinationDir new File("${installerDir}/server")
+//    archiveName 'slc-import.zip'
+//
+//    doLast {
+//        project.delete "${installerDir}/server/E_I_Files"
+//    }
+//}
+
+//task zipServer(dependsOn: ['zipImporter', 'generateScripts', 'generateCatalogArtifacts'], type: Zip, group: 'Installer') {
+//    from "${installerDir}/server"
+//    destinationDir new File(installerDir)
+//    archiveName 'server.zip'
+//
+//    doLast {
+//        project.delete "${installerDir}/server"
+//    }
+//}
+
+//new File('etc/product_catalog').eachDir() { def dir ->
+//    tasks.create(name: "zipIt.${dir.getName()}", type: Zip) {
+//        archiveName = "slc-${versionPrefix}-${dir.getName()}_${version}.zip"
+//        from(dir.getPath())
+//        destinationDir = file("${buildDir}/catalogs/catalogs")
+//    }
+//}
+
+//task zipCatalogs(dependsOn: tasks.matching { Task task -> task.name.startsWith('zipIt.') })
+
+//task zipInstaller(dependsOn: ['zipServer'], type: Zip, group: 'Installer') {
+//    from installerDir
+//    destinationDir buildDir
+//    archiveName 'slc-installer.zip'
+//}
+
+//task checkEnvironment << {
+//    if (!project.hasProperty('environment.name'))
+//        throw new GradleException('You must provide -Penvironment.name parameter')
+//}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { classpath ->
+                classpath.entries.removeAll { entry -> entry.path.contains('resources') && entry.kind == 'lib' }
+                classpath.entries.removeAll { entry -> entry.path.contains('classes') && entry.kind == 'lib' }
+            }
+        }
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/java')
+        testSourceDirs += file('src/test/java')
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}
+
